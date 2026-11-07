@@ -1,0 +1,939 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<link rel="icon" href="data:," />
+<title>Dividend Zone — Dividend Stocks &amp; Government Bonds, in Plain English</title>
+<meta name="description" content="Dividend Zone is an income-first investing concept: dividend stocks, blue chips, Treasury bonds, I Bonds, income calculators, a bond ladder builder, and self-directed retirement accounts — education, not advice." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700;8..60,900&family=Libre+Franklin:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+:root{
+  color-scheme: light dark;
+  --bg:#f7f8f6;
+  --surface:#ffffff;
+  --surface2:#eef3ee;
+  --ink:#14231c;
+  --ink2:#43544a;
+  --line:#d7ded6;
+  --navy:#0f2a44;
+  --navy-ink:#ffffff;
+  --green:#177245;
+  --green-soft:#e2f0e6;
+  --gold:#9a7414;
+  --gold-soft:#faf0d2;
+  --red:#b3362b;
+  --red-soft:#fbe9e6;
+  --amber-soft:#fdf3e0;
+  --shadow:0 1px 2px rgba(15,42,68,.07),0 8px 24px rgba(15,42,68,.06);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0d1512;
+    --surface:#16211b;
+    --surface2:#1c2a21;
+    --ink:#e8efe9;
+    --ink2:#a9bcb0;
+    --line:#2c3d33;
+    --navy:#0a1c30;
+    --green:#4cc07e;
+    --green-soft:#173325;
+    --gold:#e0b64f;
+    --gold-soft:#33290f;
+    --red:#f08a7d;
+    --red-soft:#3a1d18;
+    --amber-soft:#33270f;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Libre Franklin",system-ui,sans-serif;font-size:16.5px;line-height:1.6;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:"Source Serif 4",Georgia,serif;line-height:1.15;margin:0}
+a{color:var(--green)}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+
+/* ---------- ticker strip ---------- */
+.ticker{background:var(--navy);color:#cfe0ee;font-size:13px;overflow:hidden;white-space:nowrap}
+.ticker-inner{display:inline-flex;gap:34px;padding:8px 20px;animation:none}
+.ticker b{color:#fff;font-weight:600}
+.ticker .up{color:#7fe0a8}
+.ticker span{font-family:"IBM Plex Mono",monospace}
+
+/* ---------- header ---------- */
+header.site{background:var(--surface);border-bottom:3px solid var(--green)}
+.masthead{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;padding:20px 0 6px}
+.logo{font-family:"Source Serif 4",Georgia,serif;font-weight:900;font-size:clamp(30px,5vw,44px);letter-spacing:-.5px;color:var(--ink);text-decoration:none}
+.logo .z{color:var(--green)}
+.tagline{color:var(--ink2);font-size:15px;font-weight:500}
+.datestamp{margin-left:auto;color:var(--ink2);font-size:13px;font-family:"IBM Plex Mono",monospace;text-align:right}
+nav.tabs{display:flex;gap:4px;flex-wrap:wrap;padding:10px 0 14px}
+nav.tabs button{appearance:none;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-weight:600;font-size:14.5px;padding:8px 16px;border-radius:999px;cursor:pointer}
+nav.tabs button:hover{border-color:var(--green)}
+nav.tabs button[aria-selected="true"]{background:var(--green);border-color:var(--green);color:#fff}
+@media (prefers-color-scheme: dark){nav.tabs button[aria-selected="true"]{color:#0d1512}}
+
+/* ---------- layout ---------- */
+main{padding:28px 0 60px}
+.view{display:none}
+.view.active{display:block}
+.grid{display:grid;gap:20px}
+.cols-3{grid-template-columns:repeat(3,1fr)}
+.cols-2{grid-template-columns:repeat(2,1fr)}
+@media(max-width:900px){.cols-3,.cols-2{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px;box-shadow:var(--shadow)}
+.card h3{font-size:21px;margin-bottom:8px}
+.eyebrow{font-size:12.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--green);margin:0 0 8px}
+.section-head{margin:34px 0 16px}
+.section-head h2{font-size:clamp(26px,3.6vw,34px);font-weight:900}
+.section-head p{color:var(--ink2);max-width:72ch;margin:8px 0 0}
+.lede{font-size:19px;line-height:1.55;max-width:76ch}
+.small{font-size:13.5px;color:var(--ink2)}
+.big-num{font-family:"IBM Plex Mono",monospace;font-size:30px;font-weight:600}
+.pill{display:inline-block;font-size:12px;font-weight:700;padding:2px 10px;border-radius:999px;background:var(--green-soft);color:var(--green)}
+.pill.gold{background:var(--gold-soft);color:var(--gold)}
+.pill.red{background:var(--red-soft);color:var(--red)}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.25fr .85fr;gap:22px;align-items:stretch}
+@media(max-width:900px){.hero{grid-template-columns:1fr}}
+.hero-main{background:var(--navy);color:#eaf2f9;border-radius:16px;padding:32px;box-shadow:var(--shadow)}
+.hero-main h1{font-size:clamp(30px,4.4vw,46px);font-weight:900;color:#fff}
+.hero-main p{color:#c3d5e6;font-size:17.5px;max-width:56ch}
+.hero-main .cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.btn{appearance:none;border:0;border-radius:10px;padding:12px 20px;font:inherit;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block}
+.btn-green{background:#22a35f;color:#fff}
+.btn-ghost{background:transparent;color:#fff;border:1.5px solid #5b7d9d}
+.snapshot h3{font-size:17px}
+.snap-row{display:flex;justify-content:space-between;align-items:baseline;padding:9px 0;border-bottom:1px solid var(--line);gap:10px}
+.snap-row:last-child{border-bottom:0}
+.snap-row .k{font-weight:600;font-size:14.5px}
+.snap-row .v{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:16px;white-space:nowrap}
+
+/* tables */
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface);box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;min-width:760px}
+th,td{padding:12px 14px;text-align:left;vertical-align:top}
+thead th{background:var(--surface2);font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2);border-bottom:2px solid var(--line);cursor:pointer;user-select:none;white-space:nowrap}
+tbody tr{border-bottom:1px solid var(--line)}
+tbody tr:last-child{border-bottom:0}
+td.num,th.num{text-align:right;font-family:"IBM Plex Mono",monospace;white-space:nowrap}
+td .co{font-weight:700}
+td .tick{color:var(--ink2);font-family:"IBM Plex Mono",monospace;font-size:13px}
+.score{display:inline-flex;gap:3px;vertical-align:middle}
+.score i{width:9px;height:16px;border-radius:2px;background:var(--line);display:inline-block}
+.score i.on{background:var(--green)}
+.score i.on.mid{background:var(--gold)}
+.score i.on.low{background:var(--red)}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 14px;align-items:center}
+.toolbar input[type="search"],.toolbar select{font:inherit;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink)}
+.toolbar input[type="search"]{flex:1;min-width:200px}
+
+/* calculators */
+.calc{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+@media(max-width:900px){.calc{grid-template-columns:1fr}}
+label.f{display:block;font-weight:600;font-size:14.5px;margin:16px 0 6px}
+label.f:first-child{margin-top:0}
+input[type="number"],select.calc-in{width:100%;font:inherit;padding:11px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink)}
+input[type="range"]{width:100%;accent-color:var(--green)}
+.result-box{background:var(--green-soft);border-radius:12px;padding:20px}
+.result-box .big-num{color:var(--green)}
+.rung{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:14.5px}
+.rung:last-child{border-bottom:0}
+.rung .mono{white-space:nowrap}
+
+/* learn cards / lists */
+ul.tight{margin:8px 0;padding-left:20px}
+ul.tight li{margin:6px 0}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;font-size:15px}
+.kv dt{font-weight:700}
+.kv dd{margin:0;color:var(--ink2)}
+.callout{border-radius:12px;padding:18px 20px;background:var(--amber-soft);border:1px solid var(--line)}
+.callout.red{background:var(--red-soft)}
+.callout h3{font-size:18px;margin-bottom:6px}
+details{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin:12px 0}
+summary{font-weight:700;cursor:pointer;font-size:16.5px}
+details p,details li{color:var(--ink2)}
+
+/* legal */
+.legal h3{margin-top:26px;font-size:19px}
+.legal p,.legal li{color:var(--ink2);font-size:15.5px}
+footer.site{border-top:3px solid var(--green);background:var(--surface);padding:30px 0 46px;margin-top:10px}
+footer .cols{display:grid;grid-template-columns:2fr 1fr 1fr;gap:24px}
+@media(max-width:900px){footer .cols{grid-template-columns:1fr}}
+footer a{color:var(--ink2);text-decoration:none}
+footer a:hover{color:var(--green)}
+footer ul{list-style:none;margin:0;padding:0}
+footer li{margin:7px 0}
+.disclaimer-bar{background:var(--gold-soft);border-bottom:1px solid var(--line);font-size:13.5px;padding:9px 0;color:var(--ink)}
+.chart-box{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:var(--shadow)}
+svg text{font-family:"IBM Plex Mono",monospace}
+</style>
+</head>
+<body>
+
+<div class="ticker" aria-label="Market snapshot ticker">
+  <div class="ticker-inner">
+    <span>10-YR TREASURY <b>4.86%</b></span>
+    <span>2-YR <b>4.51%</b></span>
+    <span>30-YR <b>5.26%</b></span>
+    <span>3-MO BILL <b>4.19%</b></span>
+    <span>FED FUNDS TARGET <b>3.75–4.00%</b></span>
+    <span>I BOND <b>5.51%</b></span>
+    <span>NEXT FOMC <b>DEC 9, 2026</b></span>
+    <span class="small" style="color:#8fb0cc">Snapshot: U.S. Treasury par yield curve, Nov 6, 2026 — not live data</span>
+  </div>
+</div>
+
+<div class="disclaimer-bar">
+  <div class="wrap">📘 <strong>Education only — not financial advice.</strong> Dividend Zone is a research concept. Nothing here is a recommendation to buy or sell anything. Yields and prices change daily; verify figures at the source before acting. <a href="#" data-goto="legal">Full disclosures</a></div>
+</div>
+
+<header class="site">
+  <div class="wrap">
+    <div class="masthead">
+      <a class="logo" href="#" data-goto="home">Dividend<span class="z">Zone</span></a>
+      <span class="tagline">Dividend stocks &amp; government bonds — income first, hype last.</span>
+      <span class="datestamp">Concept preview<br/>Data snapshot: Fri, Nov 6, 2026</span>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Site sections">
+      <button role="tab" aria-selected="true" data-goto="home">Home</button>
+      <button role="tab" aria-selected="false" data-goto="stocks">Dividend Stocks</button>
+      <button role="tab" aria-selected="false" data-goto="bonds">Government Bonds</button>
+      <button role="tab" aria-selected="false" data-goto="calculators">Calculators</button>
+      <button role="tab" aria-selected="false" data-goto="retire">Retire on Your Own</button>
+      <button role="tab" aria-selected="false" data-goto="learn">Learn</button>
+      <button role="tab" aria-selected="false" data-goto="legal">Legal &amp; Disclosures</button>
+      <button role="tab" aria-selected="false" data-goto="sources">Sources &amp; Open Questions</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- ================= HOME ================= -->
+<section class="view active" id="view-home">
+  <div class="hero">
+    <div class="hero-main">
+      <p class="eyebrow" style="color:#7fe0a8">The income-first idea</p>
+      <h1>What does your money actually pay you?</h1>
+      <p>Morningstar covers every investment on earth. Dividend Zone covers two things deeply: <strong style="color:#fff">companies that pay you to own them</strong>, and <strong style="color:#fff">government bonds that pay you on schedule</strong>. Every page answers one question first — how much income, how safe is it, and what could break it.</p>
+      <div class="cta">
+        <button class="btn btn-green" data-goto="calculators">Try the income calculator</button>
+        <button class="btn btn-ghost" data-goto="stocks">See the blue-chip board</button>
+      </div>
+    </div>
+    <div class="card snapshot">
+      <h3>📊 Rates snapshot — Nov 6, 2026</h3>
+      <div class="snap-row"><span class="k">Fed funds target</span><span class="v">3.75–4.00%</span></div>
+      <div class="snap-row"><span class="k">3-month T-bill</span><span class="v">4.19%</span></div>
+      <div class="snap-row"><span class="k">2-year Treasury</span><span class="v">4.51%</span></div>
+      <div class="snap-row"><span class="k">10-year Treasury</span><span class="v">4.86%</span></div>
+      <div class="snap-row"><span class="k">30-year Treasury</span><span class="v">5.26%</span></div>
+      <div class="snap-row"><span class="k">Series I Bond (new)</span><span class="v">5.51%</span></div>
+      <p class="small" style="margin:12px 0 0">Sources: U.S. Treasury Daily Par Yield Curve Rates (Nov 6, 2026); Federal Reserve implementation note (Oct 28, 2026); TreasuryDirect (Nov 1, 2026). Snapshot only — this concept page does not stream live prices.</p>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <h2>The two halves of an income portfolio</h2>
+    <p>Stocks for income that can grow. Bonds for income you can schedule. Most income investors hold both — and the mix is the whole game.</p>
+  </div>
+  <div class="grid cols-2">
+    <div class="card">
+      <p class="eyebrow">Half one · Equities</p>
+      <h3>Dividend stocks &amp; blue chips</h3>
+      <p>A dividend is a slice of profit a company mails you — usually every quarter — just for holding the stock. Blue chips are the big, established companies with the cash flow to keep paying through recessions. The gold standard:</p>
+      <ul class="tight">
+        <li><strong>Dividend Aristocrats</strong> — S&amp;P 500 companies with <strong>25+ straight years</strong> of dividend increases. <strong>69 companies</strong> qualified in March 2026 (S&amp;P Dow Jones Indices), averaging ~2.1% yield — while the full S&amp;P 500 yielded only ~1.1% in early Nov 2026, near multi-decade lows.</li>
+        <li><strong>Dividend Kings</strong> — the elite tier: <strong>50+ years</strong> of increases, no index membership required (~50–59 companies, depending on the tracker). Procter &amp; Gamble, Genuine Parts and Dover each sit at 69 years; Coca-Cola is at 62.</li>
+        <li><strong>Payout ratio</strong> — the share of earnings paid out. Under ~60% is generally comfortable; over 100% means paying out more than the company earns, which can't last.</li>
+      </ul>
+      <button class="btn btn-green" data-goto="stocks">Open the stock board →</button>
+    </div>
+    <div class="card">
+      <p class="eyebrow">Half two · Government bonds</p>
+      <h3>Treasuries, TIPS &amp; I Bonds</h3>
+      <p>When you buy a Treasury, you're lending to the U.S. government — and it's considered among the safest IOUs in the world. Interest is exempt from state and local tax. The family:</p>
+      <ul class="tight">
+        <li><strong>Bills</strong> (4–52 weeks), <strong>Notes</strong> (2–10 years), <strong>Bonds</strong> (20–30 years) — sold at auction, tradeable any time.</li>
+        <li><strong>TIPS</strong> — principal adjusts with inflation; the 10-year TIPS "real yield" was 2.63% on Nov 6, 2026.</li>
+        <li><strong>Series I Bonds</strong> — savings bonds paying <strong>5.51%</strong> for bonds issued Nov 2026–Apr 2027 (1.40% fixed + inflation), up to $10,000 per person per year at TreasuryDirect.</li>
+      </ul>
+      <button class="btn btn-green" data-goto="bonds">Open the bond desk →</button>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <h2>How Dividend Zone scores income — the model, borrowed and rebuilt</h2>
+    <p>Morningstar (founded 1984) built its name on three ideas: a <strong>star rating</strong> comparing price to an analyst's fair-value estimate, an <strong>economic moat</strong> rating (none / narrow / wide) for competitive durability, and medal ratings for funds. Research it commissioned found wide-moat companies have historically been <em>less likely to cut dividends</em>. Dividend Zone takes that DNA and re-aims every score at one thing: <strong>the paycheck</strong>.</p>
+  </div>
+  <div class="grid cols-3">
+    <div class="card">
+      <h3>🛡️ Payout Safety</h3>
+      <p>Does cash flow cover the dividend with room to spare? We weigh the payout ratio, free-cash-flow coverage, and debt load. A 6% yield the company can't afford is worth less than a 3% yield it can grow.</p>
+    </div>
+    <div class="card">
+      <h3>📈 Streak &amp; Growth</h3>
+      <p>How many straight years of raises, and how fast is the dividend growing? A long streak through 2008 and 2020 is evidence, not a promise — Walgreens was an Aristocrat and still cut its dividend nearly in half in 2024.</p>
+    </div>
+    <div class="card">
+      <h3>💵 Yield in Context</h3>
+      <p>Every stock yield is shown next to the 10-year Treasury (4.86% on Nov 6, 2026). If a stock yields less than a risk-free bond, the case for owning it has to be growth — and the page says so.</p>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <h2>Morningstar itself, up close — the benchmark we're learning from</h2>
+    <p>Founded in Chicago in <strong>1984 by Joe Mansueto</strong> as a mutual-fund data publisher; today Nasdaq-listed (MORN), operating in 32 countries, with roughly <strong>$370bn</strong> in assets under management/advisement (31 Mar 2026). Its analysts are paid by subscribers, not by the companies covered — the independence claim the whole model rests on. The retail product, <strong>Morningstar Investor</strong> (Premium until June 2022), is a small slice next to its institutional business — Direct, PitchBook, Credit, Wealth and Retirement — which is exactly why a focused income publication has room to exist. <em>Sources: TickerNerd review (checked 16 Sept 2026 on Morningstar's own pages); Well Kept Wallet; DCF Analyst (FY2025 Form 10-K segments).</em></p>
+  </div>
+  <div class="grid cols-3">
+    <div class="card">
+      <p class="eyebrow">What it costs</p>
+      <h3>Morningstar Investor pricing</h3>
+      <dl class="kv">
+        <dt>Annual, list</dt><dd>$249/yr (~$20.75/mo)</dd>
+        <dt>First year, promo</dt><dd>$199 ($50 off, renews at list)</dd>
+        <dt>Monthly</dt><dd>$34.95/mo ($419/yr)</dd>
+        <dt>Trial</dt><dd>7 days, full access</dd>
+      </dl>
+      <p class="small">Two-/three-year prices ($448 / $499) were reported by a single review and are <strong>not yet verified</strong> — see Sources &amp; Open Questions. $249 is 1% of a $25,000 portfolio, every year: the gap Dividend Zone aims at.</p>
+    </div>
+    <div class="card">
+      <p class="eyebrow">The ratings, decoded</p>
+      <h3>Stars measure price, not quality</h3>
+      <ul class="tight">
+        <li><strong>Fund stars (1–5)</strong> — backward-looking: risk-adjusted past returns vs peers, needs 36+ months of history.</li>
+        <li><strong>Stock stars (1–5)</strong> — forward-looking: price vs an analyst's discounted-cash-flow fair-value estimate, adjusted for an Uncertainty rating (Low→Extreme).</li>
+        <li><strong>Moat</strong> — Wide = excess returns expected 20+ years; Narrow = 10+ years. Five sources: intangible assets, switching costs, network effect, cost advantage, efficient scale.</li>
+        <li><strong>Medalist (Gold→Negative)</strong> — a fund's odds of beating its benchmark over a full cycle, after fees.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <p class="eyebrow">The competition (Oct 2026)</p>
+      <h3>What else is out there</h3>
+      <dl class="kv">
+        <dt>Seeking Alpha Premium</dt><dd>$299/yr — quant ratings, 4,000+ stocks/ETFs</dd>
+        <dt>Zacks Premium</dt><dd>$495/yr for some bundles — earnings-revision ranks</dd>
+        <dt>Value Line · TipRanks · Motley Fool · Stock Rover</dt><dd>Vendor pricing — one-page reports, analyst track records, growth picks, screening</dd>
+        <dt>Yahoo Finance</dt><dd>Free data, paid Plus tier</dd>
+      </dl>
+      <p class="small">Morningstar's edge over Zacks and Seeking Alpha is a valuation-led house view plus portfolio context — not estimate momentum or crowd opinion. None of them organises everything around income. That is the opening.</p>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <h2>Built to load fast and read easy</h2>
+  </div>
+  <div class="grid cols-3">
+    <div class="card"><h3>One page, no bloat</h3><p>No pop-ups, no auto-playing video, no 40 tracking scripts. Tables are real text you can search and sort — not pictures of tables — so the page works on a slow phone connection. The performance targets, from the research: <strong>LCP ≤ 2.5s, INP &lt; 200ms, CLS ≤ 0.1</strong> (Google's Core Web Vitals, 75th percentile) — against a financial-services average fully-loaded time of 10.3s on desktop and 27.3s on mobile.</p></div>
+    <div class="card"><h3>Every number is dated</h3><p>Each rate and yield carries its "as of" date and source. Stale numbers are worse than no numbers, so anything that moves daily is labeled as a snapshot. Data is cached by how fast it changes — minutes for quotes, daily for Treasury yields (published ~3:30 p.m. ET), longer for guides — and a feed failure shows "N/A", never a stale figure dressed up as current.</p></div>
+    <div class="card"><h3>Plain English first</h3><p>Every technical term — payout ratio, duration, ex-dividend date — gets a one-line translation the first time it appears. The jargon is available; it's just never the toll you pay to understand the page.</p></div>
+  </div>
+</section>
+
+<!-- ================= STOCKS ================= -->
+<section class="view" id="view-stocks">
+  <div class="section-head" style="margin-top:0">
+    <h2>The Blue-Chip Dividend Board</h2>
+    <p>Large, established dividend payers, shown the income way: yield, how much of earnings the dividend eats (payout ratio), the raise streak, and a concept <strong>Income Safety Score</strong> (1–5, built from payout ratio + streak — a screening aid, not a rating or a recommendation). Prices and yields are a dated snapshot — they move every trading day.</p>
+  </div>
+  <div class="toolbar">
+    <input type="search" id="stockSearch" placeholder="Search company or ticker…" aria-label="Search stocks" />
+    <select id="sectorFilter" aria-label="Filter by sector">
+      <option value="">All sectors</option>
+      <option>Consumer staples</option><option>Healthcare</option><option>Telecom</option><option>Energy</option><option>Industrials</option>
+    </select>
+    <span class="small" id="stockCount"></span>
+  </div>
+  <div class="tablewrap">
+    <table id="stockTable">
+      <thead><tr>
+        <th data-sort="name">Company</th>
+        <th class="num" data-sort="price">Price</th>
+        <th class="num" data-sort="div">Div / yr</th>
+        <th class="num" data-sort="yield">Yield</th>
+        <th class="num" data-sort="payout">Payout ratio</th>
+        <th class="num" data-sort="streak">Yrs of raises</th>
+        <th data-sort="score">Safety score</th>
+      </tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <p class="small">Snapshot data: closing prices and yields as of <strong>Oct 9, 2026</strong> (StockAnalysis figures compiled by Belanger Trading); streaks cross-checked against S&amp;P Dividend Aristocrats/Kings lists — streak counts can differ by a year between trackers depending on the count date (e.g. Procter &amp; Gamble appears at 69 years in the 2026 Kings list). Context the board is read against: the full S&amp;P 500 yielded only ~1.1% in early Nov 2026, and the Motley Fool's Nov 7, 2026 high-yield list was headed by Pfizer at 7.32% and VICI Properties at 7.30% — while the very highest yields anywhere (some above 15–40%, mostly BDCs and mortgage REITs with payout ratios in the thousands of percent on some screens) are treated by this board as research leads, never as picks. AbbVie is included on purpose: its payout ratio above 100% of <em>reported</em> earnings is exactly the kind of flag this board exists to surface (pharma companies often look better on cash flow than on GAAP earnings — which is why you check both). Past dividends never guarantee future ones; companies can and do cut.</p>
+
+  <div class="grid cols-2" style="margin-top:22px">
+    <div class="card">
+      <h3>How to read a yield without getting burned</h3>
+      <ul class="tight">
+        <li><strong>Yield = annual dividend ÷ price.</strong> A yield can spike because the dividend rose — or because the price collapsed. Always ask which.</li>
+        <li><strong>The ex-dividend date</strong> is the cutoff: buy before it, you get the next payment; buy on or after it, the seller does.</li>
+        <li><strong>Qualified dividends</strong> (most blue-chip U.S. stocks held 60+ days) are taxed at the lower capital-gains rates in a taxable account; bond interest and REIT dividends are usually taxed as ordinary income.</li>
+        <li><strong>DRIP</strong> — dividend reinvestment — buys more shares automatically. It's how a 3% yield quietly compounds into real wealth over 20 years.</li>
+      </ul>
+    </div>
+    <div class="callout red">
+      <h3>⚠️ The yield trap</h3>
+      <p style="margin:0">A stock yielding 9–10% is rarely a gift — it's usually the market pricing in a cut. Screens flag three danger signs: payout ratio climbing past 100%, heavy debt with big interest bills (interest gets paid before shareholders do), and a dividend that has stopped growing. When in doubt, the streak and the cash flow statement outrank the headline yield.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= BONDS ================= -->
+<section class="view" id="view-bonds">
+  <div class="section-head" style="margin-top:0">
+    <h2>The Government Bond Desk</h2>
+    <p>Everything here is a loan to the U.S. Treasury — the borrower behind the world's benchmark interest rate. Bond math in one line: <strong>when yields rise, existing bond prices fall</strong>, and the longer the maturity, the harder they fall. Hold to maturity, though, and you get every coupon and your principal back on schedule.</p>
+  </div>
+
+  <div class="chart-box">
+    <h3 style="margin-bottom:4px">The yield curve — Nov 6, 2026</h3>
+    <p class="small" style="margin-top:0">What the government pays to borrow, by loan length (Daily Treasury Par Yield Curve Rates). Right now the curve slopes <em>up</em>: longer loans pay more — the normal shape, and the opposite of the "inverted" curve that ran through much of 2022–2024.</p>
+    <div id="yieldChart"></div>
+    <div class="grid cols-3" style="margin-top:14px">
+      <div><div class="big-num">+0.35 pts</div><p class="small" style="margin:2px 0">10-yr minus 2-yr spread — positive, not inverted</p></div>
+      <div><div class="big-num">3.88%</div><p class="small" style="margin:2px 0">Effective fed funds rate (Nov 4, 2026) inside the 3.75–4.00% target</p></div>
+      <div><div class="big-num">2.23%</div><p class="small" style="margin:2px 0">Implied 10-yr inflation (4.86% nominal − 2.63% TIPS real yield)</p></div>
+    </div>
+  </div>
+
+  <div class="section-head"><h2>Meet the family</h2></div>
+  <div class="grid cols-3">
+    <div class="card"><span class="pill">4–52 weeks</span><h3 style="margin-top:10px">Treasury Bills</h3><p>Sold at a discount, paid back at face value — no coupons, simplest thing the Treasury sells. The 3-month yielded 4.19% on Nov 6, 2026. The default home for cash you need within a year.</p></div>
+    <div class="card"><span class="pill">2–10 years</span><h3 style="margin-top:10px">Notes &amp; the 10-Year</h3><p>Coupon every six months. The 10-year note (4.86%) is <em>the</em> benchmark rate — mortgages, car loans and stock valuations all price off it.</p></div>
+    <div class="card"><span class="pill">20–30 years</span><h3 style="margin-top:10px">Treasury Bonds</h3><p>The long end: 5.26% at 30 years. Highest yield, biggest price swings if you sell early. Best matched to money you truly won't need for decades.</p></div>
+    <div class="card"><span class="pill gold">Inflation-linked</span><h3 style="margin-top:10px">TIPS</h3><p>Principal rises with the CPI, so your return is "real." 10-year TIPS yielded 2.63% above inflation on Nov 6, 2026. Tax wrinkle: you owe tax each year on the inflation adjustment you haven't received in cash yet.</p></div>
+    <div class="card"><span class="pill gold">Inflation-linked</span><h3 style="margin-top:10px">Series I Bonds</h3><p><strong>5.51%</strong> composite for bonds issued Nov 1, 2026–Apr 30, 2027 (1.40% fixed for life + inflation reset every 6 months). $10,000/person/year, TreasuryDirect only, locked 12 months, 3-month interest penalty if cashed before 5 years. State-tax free; federal tax can be deferred until you cash out.</p></div>
+    <div class="card"><span class="pill gold">Savings bond</span><h3 style="margin-top:10px">Series EE Bonds</h3><p>Fixed 2.90% for new issues (Nov 2026–Apr 2027) — plus Treasury's standing promise that an EE bond held 20 years is worth twice its purchase price. A slow, certain savings tool, not an income engine.</p></div>
+    <div class="card"><span class="pill">2 years · floating</span><h3 style="margin-top:10px">FRNs &amp; STRIPS</h3><p><strong>Floating Rate Notes</strong> reset weekly to the 13-week bill rate plus a spread — income that moves with the Fed instead of fighting it. <strong>STRIPS</strong> split a note or bond into zero-coupon pieces (principal and each coupon sold separately); they're created and sold only through brokers/dealers, never at TreasuryDirect.</p></div>
+    <div class="card"><span class="pill">Also on Nov 6</span><h3 style="margin-top:10px">TIPS across the curve</h3><p>The 10-year's 2.63% real yield sits between the <strong>5-year TIPS at 2.35%</strong> and the <strong>30-year TIPS at 3.07%</strong> (Nov 6, 2026, Daily Treasury Par Real Yield Curve). I Bonds, for comparison: the 5.51% composite is 1.40% fixed (locked for the bond's life) + a 2.04% semiannual inflation rate; the next reset is May 1, 2027. The prior period (Nov 2025–Apr 2026) paid 4.03%.</p></div>
+  </div>
+
+  <div class="section-head">
+    <h2>Why rates are where they are</h2>
+    <p>The Fed sets one rate — the federal funds target, the overnight rate banks charge each other — and the whole curve leans on it. The FOMC raised the target by 25bp to <strong>3.75–4.00%</strong> on September 17, 2026, and held it there on October 28, 2026, by a 10–2 vote — dissenters Lisa D. Cook and Beth M. Hammack both wanted another +25bp hike. The effective rate sat inside the range at <strong>3.88%</strong> (Nov 5, 2026). The next decision lands <strong>December 9, 2026</strong>, with a Summary of Economic Projections. What markets expect for December is an <strong>open question</strong> — estimates in the research ranged from ~65% to ~78.6% for a hike depending on source and date; check CME FedWatch live rather than trusting any single figure. Around the edges: the bank prime rate was 7.0% and the average 30-year fixed mortgage ~7.24% (Freddie Mac, week of Oct 29, 2026). Short yields (bills) track the Fed closely; long yields (the 10- and 30-year) track where investors think the Fed and inflation are heading over years — which is why the 10-year spiked to 5.31% in early October 2026 before settling at 4.86%.</p>
+  </div>
+  <div class="grid cols-2">
+    <div class="card">
+      <h3>Where you actually buy</h3>
+      <dl class="kv">
+        <dt>TreasuryDirect.gov</dt><dd>The government's own store — auctions and savings bonds, no fees, clunky website, money comes straight from your bank.</dd>
+        <dt>Any brokerage</dt><dd>New issues at auction or existing bonds on the secondary market; easier interface, small markups possible on secondary trades.</dd>
+        <dt>Bond funds / ETFs</dt><dd>One ticker, instant diversification — but a fund never "matures," so there's no date when you're guaranteed your principal back.</dd>
+      </dl>
+    </div>
+    <div class="card">
+      <h3>Buying at TreasuryDirect, step by step</h3>
+      <p style="margin-top:0">Verified live from <a href="https://treasurydirect.gov/help-center/marketable-faqs/" target="_blank" rel="noopener">TreasuryDirect's marketable-securities FAQ</a> (Nov 7, 2026):</p>
+      <ul class="tight">
+        <li>Open an account with your SSN, a U.S. address and a U.S. bank account — no fees, no minimum balance. (A 2026 move to ID.me sign-in was noted in the research; check the current login steps before following any how-to.)</li>
+        <li><strong>Marketable securities: $100 minimum, in $100 multiples.</strong> Savings bonds: $25 minimum. Non-competitive bids up to $10m per auction.</li>
+        <li>BuyDirect tab → security type → amount → auction date. Everyone in an auction gets the same price.</li>
+        <li>New purchases generally stay in TreasuryDirect <strong>45 calendar days</strong> before they can transfer to a broker — the only way to sell before maturity. At maturity, principal lands in your bank or can be scheduled to reinvest.</li>
+        <li>Savings-bond cap: $10,000 electronic I Bonds + $10,000 electronic EE Bonds per person per calendar year. Paper I Bonds via tax refund ended Jan 1, 2025.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Municipal bonds, with real numbers</h3>
+      <p>Issued by states and cities, not Washington. Interest is generally <strong>exempt from federal tax</strong> (and state tax if issued in your state), so compare on a <strong>tax-equivalent yield</strong>: muni yield ÷ (1 − your federal rate). National muni funds on Nov 5, 2026: <strong>VTEB 4.11%</strong> (0.03% expense, 7.3-yr duration) and <strong>MUB 3.76%</strong> (0.05%, 7.13 yrs), 30-day SEC yields. At a 24–37% bracket, VTEB's 4.11% tax-free ≈ <strong>5.4–6.5% taxable</strong> — competitive with the 10-year Treasury's 4.86% for high earners, much less so in a low bracket. The trade: munis carry real credit risk (Detroit and Puerto Rico defaulted) and thinner liquidity; Treasuries carry effectively none. There is no free official daily muni index, so fund SEC yields are the labelled stand-in. For context the same week: investment-grade corporates yielded 5.71% and high-yield 8.07% (ICE BofA, Nov 5, 2026) — more pay, more risk, fully taxable.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CALCULATORS ================= -->
+<section class="view" id="view-calculators">
+  <div class="section-head" style="margin-top:0">
+    <h2>Income Calculators</h2>
+    <p>Two tools, no sign-up, nothing saved or sent anywhere — the math happens on this page. Estimates use simple annual yield math and the Nov 6, 2026 Treasury snapshot; they are illustrations, not projections or advice.</p>
+  </div>
+
+  <div class="calc">
+    <div class="card">
+      <p class="eyebrow">Tool 1</p>
+      <h3>💵 "What does this pay me?"</h3>
+      <label class="f" for="incAmount">Amount invested ($)</label>
+      <input type="number" id="incAmount" value="25000" min="0" step="500" />
+      <label class="f" for="incAsset">Where the money sits</label>
+      <select class="calc-in" id="incAsset">
+        <option value="4.86">10-Year Treasury Note — 4.86%</option>
+        <option value="4.19">3-Month T-Bill — 4.19%</option>
+        <option value="5.26">30-Year Treasury Bond — 5.26%</option>
+        <option value="5.51">Series I Bond — 5.51% (first 6 months; $10k/yr cap)</option>
+        <option value="3.10">Blue-chip dividend basket — ~3.10% blended</option>
+        <option value="2.10">Dividend Aristocrats average — ~2.10%</option>
+        <option value="custom">Custom yield…</option>
+      </select>
+      <label class="f" for="incYield">Yield: <span class="mono" id="incYieldLabel">4.86%</span></label>
+      <input type="range" id="incYield" min="0" max="12" step="0.05" value="4.86" />
+      <label class="f" for="incYears">Years held (with income reinvested): <span class="mono" id="incYearsLabel">10</span></label>
+      <input type="range" id="incYears" min="1" max="30" step="1" value="10" />
+    </div>
+    <div class="card">
+      <p class="eyebrow">Your estimate</p>
+      <div class="result-box">
+        <div class="small" style="color:var(--ink2)">Estimated income per year</div>
+        <div class="big-num" id="incPerYear">$0</div>
+        <div class="small" style="color:var(--ink2);margin-top:10px">Per month, on average</div>
+        <div class="big-num" id="incPerMonth" style="font-size:22px">$0</div>
+        <div class="small" style="color:var(--ink2);margin-top:10px">Value after reinvesting all income for <span id="incYearsEcho">10</span> years (yield held constant — a simplification)</div>
+        <div class="big-num" id="incGrown" style="font-size:22px">$0</div>
+      </div>
+      <p class="small">Reality checks: Treasury yields are locked only if you buy and hold that bond; I Bond rates reset every 6 months; dividend yields assume the company keeps paying — none of that is guaranteed, and taxes aren't included. Treasury interest skips state/local tax, which quietly boosts its after-tax edge.</p>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <h2>Bond Ladder Builder</h2>
+    <p>A ladder splits your money across bonds maturing in different years. Each year a rung matures — cash back in hand to spend or reinvest at whatever rates exist then. It's the classic way to turn rate uncertainty into a schedule. Yields below are interpolated from the Nov 6, 2026 par curve (1-mo 4.02% · 3-mo 4.19% · 2-yr 4.51% · 10-yr 4.86% · 30-yr 5.26%).</p>
+  </div>
+  <div class="calc">
+    <div class="card">
+      <p class="eyebrow">Tool 2</p>
+      <h3>🪜 Build your ladder</h3>
+      <label class="f" for="ladAmount">Total to ladder ($)</label>
+      <input type="number" id="ladAmount" value="50000" min="0" step="1000" />
+      <label class="f" for="ladYears">Ladder length: <span class="mono" id="ladYearsLabel">5 years</span></label>
+      <input type="range" id="ladYears" min="2" max="10" step="1" value="5" />
+      <p class="small">Equal rungs maturing in years 1 through <span id="ladYearsEcho">5</span>. Each rung is sized to the $1,000 minimum for marketable Treasuries bought at most brokerages.</p>
+    </div>
+    <div class="card">
+      <p class="eyebrow">Your ladder</p>
+      <div id="ladderOut"></div>
+      <div class="result-box" style="margin-top:16px">
+        <div class="small" style="color:var(--ink2)">Estimated combined income per year</div>
+        <div class="big-num" id="ladIncome">$0</div>
+        <div class="small" style="color:var(--ink2)">Blended yield: <span class="mono" id="ladBlend">—</span> · First rung matures in 12 months</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-head">
+    <h2>Tax-Equivalent Yield: Muni vs Treasury</h2>
+    <p>Municipal bond interest skips federal tax, so a muni's headline yield understates it. Divide by (1 − your federal bracket) to see the taxable yield you'd need to match it. Defaults use VTEB's 4.11% 30-day SEC yield (Nov 5, 2026).</p>
+  </div>
+  <div class="calc">
+    <div class="card">
+      <p class="eyebrow">Tool 3</p>
+      <h3>🧾 Compare after tax</h3>
+      <label class="f" for="teyYield">Muni yield (%): <span class="mono" id="teyYieldLabel">4.11%</span></label>
+      <input type="range" id="teyYield" min="1" max="8" step="0.01" value="4.11" />
+      <label class="f" for="teyBracket">Your federal tax bracket</label>
+      <select class="calc-in" id="teyBracket">
+        <option value="12">12%</option>
+        <option value="22">22%</option>
+        <option value="24" selected>24%</option>
+        <option value="32">32%</option>
+        <option value="35">35%</option>
+        <option value="37">37%</option>
+      </select>
+      <p class="small">State tax is not included: Treasuries skip state/local tax entirely, and an in-state muni can skip both — either can move the answer. Illustration only, not tax advice.</p>
+    </div>
+    <div class="card">
+      <p class="eyebrow">Your estimate</p>
+      <div class="result-box">
+        <div class="small" style="color:var(--ink2)">Tax-equivalent yield</div>
+        <div class="big-num" id="teyOut">—</div>
+        <div class="small" style="color:var(--ink2);margin-top:10px">10-Year Treasury, for comparison (Nov 6, 2026)</div>
+        <div class="big-num" style="font-size:22px">4.86%</div>
+        <p class="small" id="teyVerdict" style="margin:12px 0 0"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= RETIRE ================= -->
+<section class="view" id="view-retire">
+  <div class="section-head" style="margin-top:0">
+    <h2>Retire on Your Own: Accounts You Open Yourself</h2>
+    <p>No employer required. Everything below is an account you open at a bank or brokerage in about 15 minutes, on your own name and your own schedule — the foundation of most early-retirement plans. Limits shown are the official <strong>2026</strong> figures (IRS Notice 2025-67).</p>
+  </div>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Account</th><th>Who it's for</th><th class="num">2026 limit</th><th>Tax deal</th><th>Early-access notes</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Roth IRA</strong></td><td>Anyone with earned income under the limits (phase-out: $153k–$168k single · $242k–$252k married joint)</td><td class="num">$7,500<br/><span class="small">$8,600 at 50+</span></td><td>Pay tax now; qualified withdrawals in retirement are <strong>tax-free</strong></td><td>Your <em>contributions</em> (not earnings) can be withdrawn any time, tax- and penalty-free — a built-in bridge for early retirees</td></tr>
+        <tr><td><strong>Traditional IRA</strong></td><td>Anyone with earned income</td><td class="num">$7,500<br/><span class="small">shared with Roth</span></td><td>Possible deduction now; taxed on withdrawal</td><td>Withdrawals before 59½ usually face a 10% penalty, with exceptions</td></tr>
+        <tr><td><strong>SEP IRA</strong></td><td>Self-employed &amp; small-business owners</td><td class="num">Up to $72,000<br/><span class="small">25% of compensation</span></td><td>Employer-funded (that's you); pre-tax</td><td>Dead simple to open; no annual filing for most; same early-withdrawal rules as a traditional IRA</td></tr>
+        <tr><td><strong>Solo 401(k)</strong></td><td>Self-employed, no employees (spouse OK)</td><td class="num">$24,500 + profit share<br/><span class="small">$72,000 total cap · $80,000 at 50+ · $83,250 ages 60–63</span></td><td>Pre-tax and/or Roth, if the plan allows</td><td>Usually allows the biggest contributions of any self-employed plan; some providers allow loans. Plan generally must be <strong>open by Dec 31</strong> of the tax year; file Form 5500-EZ once assets pass $250,000</td></tr>
+        <tr><td><strong>SIMPLE IRA</strong></td><td>Self-employed, or a business with up to 100 employees</td><td class="num">$17,000<br/><span class="small">$21,000 at 50+ · $22,250 ages 60–63</span></td><td>Pre-tax; employer must match up to 3% of pay or contribute 2% for every eligible employee</td><td>Withdrawals in the <strong>first 2 years</strong> of participation face a <strong>25%</strong> penalty (not 10%) before 59½. Establish by Oct 1 of the plan year. A higher $18,100 deferral for employers with ≤25 employees is flagged as an <strong>open question</strong> in the research — verify in IRS Notice 2025-67</td></tr>
+        <tr><td><strong>HSA</strong></td><td>Anyone on a high-deductible health plan</td><td class="num">$4,400 / $8,750<br/><span class="small">self / family</span></td><td>The only triple-tax-free account: deductible in, grows free, out free for medical costs</td><td>After 65 it behaves like a traditional IRA for non-medical spending</td></tr>
+        <tr><td><strong>Taxable brokerage</strong></td><td>Everyone — no rules, no limits</td><td class="num">Unlimited</td><td>Dividends &amp; gains taxed as you go (qualified dividends at lower rates)</td><td><strong>The early retiree's best friend:</strong> no age gates at all. Most FIRE plans bridge the years before 59½ here</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="small">The $7,500 IRA limit is one bucket shared across all your traditional and Roth IRAs combined, and can't exceed your taxable compensation (a non-working spouse can contribute off a joint return — the spousal IRA). Contributions for 2026 can be made until April 15, 2027. One trap the research flags: the "backdoor Roth" (non-deductible traditional contribution, then conversion) triggers the <strong>pro-rata rule</strong> if you hold other pre-tax IRA money — get tax advice first. Sources: <a href="https://www.irs.gov/newsroom/401k-limit-increases-to-24500-for-2026-ira-limit-increases-to-7500" target="_blank" rel="noopener">IRS Notice 2025-67 / IR-2025-111</a>; IRS pages on SEP and one-participant 401(k) plans. Beware stale guides: one secondary source in the research still lists the <em>2025</em> limits ($70,000 total, $23,500 deferral) labelled as 2026 — the IRS figures above govern.</p>
+
+  <div class="section-head"><h2>Early retirement, honestly</h2></div>
+  <div class="grid cols-2">
+    <div class="card">
+      <h3>The bridges across the 59½ wall</h3>
+      <ul class="tight">
+        <li><strong>Roth conversion ladder</strong> — convert traditional IRA money to Roth a little each year in low-income early-retirement years; each conversion becomes withdrawable, penalty-free, after 5 years.</li>
+        <li><strong>Rule 72(t) / SEPP</strong> — a rigid IRS schedule of substantially equal payments that unlocks an IRA early without the 10% penalty. Powerful, unforgiving of mistakes.</li>
+        <li><strong>Rule of 55</strong> — leave a job at 55+ and that employer's 401(k) can often be tapped penalty-free (employer plans only — one reason not to roll everything into an IRA too fast).</li>
+        <li><strong>The taxable bridge</strong> — simplest of all: spend brokerage money first while the tax-advantaged accounts keep compounding.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>What the brochures skip</h3>
+      <ul class="tight">
+        <li><strong>Healthcare is the hard part.</strong> Before Medicare at 65, early retirees budget for marketplace (ACA) coverage — and your reported income steers your premium subsidy, which makes Roth vs. traditional a yearly calculation.</li>
+        <li><strong>The "4% rule" is a rule of thumb,</strong> from 1990s research (Bengen 1994; the Trinity study), not a law of physics. It survived 30 years in ~94% of historical U.S. periods — but only ~80% over <strong>50 years</strong>, the horizon an early retiree actually faces; <strong>3.5%</strong> lasted 50 years in ~98%. A bond-only portfolio managed 30 years at 4% in just 39% of periods, and a 1% annual fee cut 30-year success from ~94% to ~87%. Dividend-and-Treasury income covering core expenses is one conservative alternative: spend the paycheck, leave the principal alone.</li>
+        <li><strong>RMDs still arrive.</strong> Traditional, SEP, SIMPLE and pre-tax 401(k) money must start coming out at <strong>age 73</strong> (born 1951–1959) or <strong>age 75</strong> (born 1960+, from 2033). Missing one costs a 25% excise tax on the shortfall (10% if corrected within 2 years). Roth IRAs have no lifetime RMDs at all — one more reason the bridge years matter.</li>
+        <li><strong>Deadlines differ by account.</strong> A SEP IRA can be opened <em>and</em> funded as late as your tax filing deadline including extensions (Oct 15, 2027 for 2026); a Solo 401(k) generally must exist by Dec 31 for that year's employee deferrals — though the research flags the exact post-year-end rule for sole proprietors as an <strong>open question</strong> to confirm in IRS Publication 560.</li>
+        <li><strong>Sequence risk</strong> — a crash in your first five retired years does far more damage than the same crash in year twenty. A 2–3 year Treasury ladder of living expenses is the classic shock absorber.</li>
+        <li><strong>Social Security timing</strong> still matters: claiming at 62 vs. 70 changes the check by roughly 70%+ for life.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout"><h3>📌 Start-here order most self-directed savers use</h3><p style="margin:0">HSA if you qualify → Roth IRA → SEP or Solo 401(k) for self-employment income → taxable brokerage for everything above the caps. It's a framework for learning, not a personal recommendation — your tax picture decides the real order, and a one-hour consult with a fiduciary CPA or CFP® can pay for itself here.</p></div>
+</section>
+
+<!-- ================= LEARN ================= -->
+<section class="view" id="view-learn">
+  <div class="section-head" style="margin-top:0">
+    <h2>Learn: The Income Investor's Field Guide</h2>
+    <p>Short, plain-English answers to the questions every page on this site assumes you know.</p>
+  </div>
+
+  <details open><summary>What exactly is a dividend — and where does the money come from?</summary>
+    <p>A dividend is a distribution of a company's profits to its shareholders, set by its board of directors, typically paid quarterly in cash. It comes out of real earnings and cash flow — which is why the <em>payout ratio</em> (dividends ÷ earnings) is the first safety check. A company earning $6 a share and paying $4 has a 67% payout: believable. One paying $4 on $3 of earnings is borrowing from its future.</p></details>
+
+  <details><summary>What makes a stock "blue chip"?</summary>
+    <p>No official definition — it's shorthand for large, long-established, financially sound companies with household-name products and long records of paying (and usually raising) dividends: think Procter &amp; Gamble, Johnson &amp; Johnson, Coca-Cola, PepsiCo. Blue chips are the natural hunting ground for income investors because dividend reliability, not growth fireworks, is the point.</p></details>
+
+  <details><summary>Why do bond prices fall when interest rates rise?</summary>
+    <p>Imagine you own a bond paying 3%. New bonds start paying 5%. Nobody will pay full price for your 3% bond — its price drops until its effective yield matches the market. The longer until your bond matures, the bigger the swing (that's <em>duration</em>). If you hold to maturity, the swings are just scenery: you still get every payment and your principal back.</p></details>
+
+  <details><summary>What's the yield curve, and why did everyone fear it "inverting"?</summary>
+    <p>Plot what the Treasury pays at every maturity and you get the yield curve. Normally it slopes up — longer loans, higher rates. When short rates rise <em>above</em> long rates (an inversion), it has historically signaled recession risk, and it ran inverted for much of 2022–2024. As of Nov 6, 2026 it slopes upward again: 3-month 4.19% → 10-year 4.86% → 30-year 5.26%.</p></details>
+
+  <details><summary>How does Morningstar actually rate things? (And what does Dividend Zone do differently?)</summary>
+    <p>Morningstar, founded in Chicago in 1984, became the default language of fund and stock research. Its fund <strong>star rating</strong> (1–5) is backward-looking: risk-adjusted returns versus peers, recalculated monthly. Its <strong>stock star rating</strong> is forward-looking: price versus an analyst's discounted-cash-flow fair-value estimate, adjusted for uncertainty. The <strong>economic moat</strong> rating judges whether a company's competitive edge can protect profits for 10 (narrow) or 20 (wide) years, and its <strong>Medalist ratings</strong> (Gold→Negative) judge whether a fund can beat its benchmark going forward. Dividend Zone borrows the discipline — fair value, moats, peer comparison — but points every score at income durability instead of total return. Morningstar®, Star Rating™ and Economic Moat™ are Morningstar's marks; this concept is not affiliated with or endorsed by Morningstar, Inc.</p></details>
+
+  <details><summary>Treasury, TIPS, or I Bond — which one for which job?</summary>
+    <ul>
+      <li><strong>Cash within a year:</strong> T-bills (or a Treasury money-market fund).</li>
+      <li><strong>Scheduled income, known dates:</strong> notes/bonds in a ladder.</li>
+      <li><strong>Inflation protection you'll hold for years:</strong> I Bonds (simple, but capped at $10k/yr and locked a year) or TIPS (no cap, tradeable, trickier taxes).</li>
+      <li><strong>Beating inflation by a set margin:</strong> TIPS — the 10-year's 2.63% "real" yield on Nov 6, 2026 is the market's cleanest read on that.</li>
+    </ul></details>
+
+  <details><summary>How are dividends and bond interest taxed?</summary>
+    <p>In a taxable U.S. account: <strong>qualified dividends</strong> (most blue chips, held long enough) get the lower 0%/15%/20% capital-gains rates; <strong>Treasury interest</strong> is federally taxed but exempt from state and local tax; <strong>municipal bond interest</strong> is usually federally exempt; <strong>I Bond</strong> federal tax can be deferred until redemption. Inside IRAs, none of this matters year to year — traditional accounts are taxed at withdrawal, Roth accounts not at all if qualified. General education only; your situation needs a tax professional.</p></details>
+</section>
+
+<!-- ================= LEGAL ================= -->
+<section class="view legal" id="view-legal">
+  <div class="section-head" style="margin-top:0">
+    <h2>Legal &amp; Disclosures</h2>
+    <p>The full fine print, written to be read. A finance site lives or dies on this page.</p>
+  </div>
+
+  <h3>1. Educational content — not investment advice</h3>
+  <p>Dividend Zone is a concept website providing general financial <em>education</em> and information only. It is not a registered investment adviser, broker-dealer, bank, or tax or legal professional, and nothing on this site is personalized investment, tax, or legal advice or a recommendation, offer, or solicitation to buy or sell any security. Scores, screens, calculators, and examples are illustrative tools. Always do your own research or consult a licensed fiduciary adviser, CPA, or attorney before making financial decisions.</p>
+
+  <h3>2. Risk disclosure</h3>
+  <p>All investing involves risk, including possible loss of principal. Dividends are never guaranteed: companies may cut or eliminate them at any time (Dividend Aristocrats have done so). Bond prices fluctuate with interest rates and may be worth more or less than face value if sold before maturity. Past performance — including dividend streaks — does not guarantee future results. Treasury securities are backed by the full faith and credit of the U.S. government as to timely payment of principal and interest; FDIC and SIPC protections, where they apply, protect against institutional failure, not market losses.</p>
+
+  <h3>3. Data sources, accuracy &amp; timeliness</h3>
+  <p>Figures on this concept page are dated snapshots compiled Nov 7, 2026 from: U.S. Department of the Treasury, Daily Treasury Par Yield &amp; Real Yield Curve Rates (Nov 6, 2026); TreasuryDirect savings bond announcements (Nov 1–2, 2026); Federal Reserve implementation note (Oct 28, 2026); IRS Notice 2025-67 (2026 retirement limits); and published dividend data as of Oct 9, 2026. Market data is delayed, may contain errors, and changes constantly. Dividend Zone makes no warranty as to accuracy or completeness and is not responsible for decisions made in reliance on it. Verify all figures at the original source.</p>
+
+  <h3>3b. Why this site can publish without an adviser's licence — and where that protection ends</h3>
+  <p>The line is drawn by the <strong>Investment Advisers Act of 1940, §202(a)(11)</strong>: an "investment adviser" is someone who, <em>for compensation</em>, <em>engages in the business</em> of advising others on securities — all three prongs must be met, and the SEC reads the advice prong broadly. Calling something "education" does not protect it if the substance is advice (<em>SEC v. Capital Gains Research Bureau</em>, 1963). Dividend Zone is built to stay inside the <strong>publisher's exclusion, §202(a)(11)(D)</strong>, as read in <em>Lowe v. SEC</em> (1985): a bona fide publication of <strong>general and regular circulation</strong>, <strong>impersonal</strong> — never tailored to one reader's situation — and not a sham vehicle for personalised advice. Features that could cross the line, and which this concept therefore avoids or keeps decision-<em>support</em> only: tools that output "buy X", "you should" language tied to a named security for a named person, personalised portfolio reviews, one-to-one guidance by email, and irregular paid "picks" that react to market events instead of a regular publishing schedule. <strong>This analysis is fact-specific and must be confirmed by a securities attorney before any commercial launch</strong> — it is general information about the law, not legal advice. If a future version ever offered personalised advice, SEC Marketing Rule 206(4)-1, Form ADV, fiduciary duty and record-keeping (5-year ad retention) would apply, and registration would turn on AUM (SEC at $110m+, otherwise the states). Separately: Securities Act §17(b) makes it unlawful to promote a security without disclosing the nature, source and amount of any compensation — the provision behind the SEC's finfluencer cases and FINRA's influencer sweep (M1 Finance $850,000; TradeZero $250,000, 2024). Anti-fraud law — Advisers Act §206, Exchange Act §10(b) / Rule 10b-5 — applies to everyone, licence or not: no disclaimer cures a false statement, a cherry-picked period, or a yield we have not verified.</p>
+
+  <h3>3c. Market data is licensed, not scraped</h3>
+  <p>Real-time U.S. equity quotes come from exchange feeds (CTA/UTP) under licence, with per-user fees — which is why free publications show ~15-minute delayed data. This concept republishes only <strong>public-domain government data</strong> (U.S. Treasury yield curves and auction results, Federal Reserve H.15, SEC EDGAR filings, IRS publications) with attribution, plus clearly dated secondary figures with their source named. It does not scrape vendor feeds or undocumented endpoints (their terms allow personal, non-commercial use only), and it does not reproduce Morningstar's, Zacks' or any other publisher's reports, methodology text or tables — facts are free to use; someone else's expression of them is not. Index names (S&amp;P 500®, Dividend Aristocrats®) are used nominatively to identify the index; marketing a product <em>by reference to</em> an S&amp;P DJI index would require a licence from S&amp;P Dow Jones Indices. A live version will keep a written data-licensing inventory: source, terms, what is permitted, renewal date.</p>
+
+  <h3>4. Advertising &amp; affiliate disclosure (FTC)</h3>
+  <p>If this concept becomes a live publication, it may earn revenue from display advertising (e.g., Google AdSense) and affiliate relationships with brokerages, banks, and financial publishers. Under the FTC Endorsement Guides (16 CFR Part 255, revised 2023), a commission is a <em>material connection</em> that must be disclosed <strong>clearly and conspicuously — close to the recommendation and before the reader acts</strong>, not buried in a footer or behind a "more" link; the FTC's own example wording is "Paid link" or "We earn a commission if you buy through this link" ("affiliate link" alone may not be understood). A single About-page disclosure does not cover individual articles. The FTC's Consumer Reviews Rule (16 CFR Part 465, in force Oct 21, 2024) bans fake or paid-undisclosed testimonials. Sponsored placements will be labeled "Advertisement" or "Sponsor," and compensation will never buy a rating, score, or ranking. Brokerages and banks are not responsible for content on this site. <strong>Open questions:</strong> the exact per-violation civil penalty ($50,120, $51,744 and $53,088 all appear in 2026 sources — check the current 16 CFR 1.98 table), and a claimed July 1, 2026 revision of the FTC affiliate rules reported by one affiliate-marketing source but <em>not corroborated on ftc.gov</em> in the research — neither figure is relied on anywhere on this site.</p>
+
+  <h3>5. Privacy policy (summary)</h3>
+  <ul>
+    <li><strong>This concept page</strong> collects nothing: no accounts, no cookies set by us, no analytics, and calculator inputs never leave your device.</li>
+    <li><strong>A live version</strong> using AdSense or similar networks would serve third-party cookies for ad personalization; it would publish a full privacy policy covering what is collected, cookie consent (including GDPR/UK and California CCPA/CPRA rights to know, delete, and opt out of "sale"/sharing), and a working opt-out link — and that policy must be live before any ad code is added.</li>
+    <li>We would never sell your email address. A newsletter would be double opt-in with one-click unsubscribe in every issue, per the CAN-SPAM Act.</li>
+  </ul>
+
+  <h3>6. Terms of use</h3>
+  <p>Content is provided "as is" for personal, non-commercial use. You may link to this site and quote brief excerpts with attribution. You may not scrape content to resell, present our illustrative scores as professional ratings, or use the site for any unlawful purpose. Market data belongs to its respective sources. These terms are governed by the laws of the State of New York.</p>
+
+  <h3>7. Trademarks &amp; non-affiliation</h3>
+  <p>Morningstar®, Morningstar Star Rating™, and Economic Moat™ are trademarks of Morningstar, Inc. S&amp;P®, S&amp;P 500®, and Dividend Aristocrats® are trademarks of S&amp;P Dow Jones Indices. TreasuryDirect® is a registered trademark of the U.S. Department of the Treasury. Dividend Zone is an independent concept and is not affiliated with, endorsed by, or sponsored by any of them. Company names and tickers are used for identification and education only.</p>
+
+  <h3>8. Copyright &amp; DMCA</h3>
+  <p>Original text and design on this site © 2026 Dividend Zone. If you believe content infringes your copyright, send a notice identifying the work and its location to the contact below; valid notices under the Digital Millennium Copyright Act will be acted on promptly, with a counter-notice process for mistaken takedowns.</p>
+
+  <h3>9. About &amp; contact</h3>
+  <p>Dividend Zone is an independent income-investing research concept owned and operated by Sean O'Friel, based in New York. It curates and explains publicly available data about dividend-paying companies and U.S. government securities, and links readers to original sources. Contact for corrections, advertising, or legal notices: <a href="mailto:sean.ofriel@aol.com">sean.ofriel@aol.com</a>. Corrections are made openly: if a figure on this page is wrong, tell us and we'll fix it and note the fix.</p>
+</section>
+
+<!-- ================= SOURCES & OPEN QUESTIONS ================= -->
+<section class="view" id="view-sources">
+  <div class="section-head" style="margin-top:0">
+    <h2>Sources &amp; Open Questions</h2>
+    <p>Every figure on Dividend Zone comes from the research compiled on <strong>Nov 7, 2026</strong>. This page names where each block of numbers came from, separates what was <strong>verified live</strong> from what rests on search-index sources, and lists — plainly — everything the research could <strong>not</strong> verify. Anything in the second list is either omitted from the site or labelled as unverified where it appears.</p>
+  </div>
+
+  <div class="grid cols-2">
+    <div class="card">
+      <p class="eyebrow">Verified live · Nov 7, 2026</p>
+      <h3>Pages opened and read directly</h3>
+      <ul class="tight">
+        <li><a href="https://treasurydirect.gov/help-center/marketable-faqs/" target="_blank" rel="noopener">TreasuryDirect — marketable securities FAQ</a> — $100 minimums, savings-bond rules, STRIPS via brokers only.</li>
+        <li><a href="https://design.morningstar.com/systems/marketing/business-website/overview" target="_blank" rel="noopener">Morningstar Design — business website overview</a> — information architecture: sitemaps, navigation hierarchies, reusable components.</li>
+        <li><a href="https://www.morningstar.in/membership/termsofuse.htm" target="_blank" rel="noopener">Morningstar India — Terms of Use</a> — the model for this site's no-advice wording (§3, §8).</li>
+      </ul>
+      <p class="eyebrow" style="margin-top:18px">Primary sources behind the numbers</p>
+      <ul class="tight">
+        <li><strong>Rates &amp; yields</strong> — U.S. Treasury Daily Par Yield &amp; Real Yield Curve Rates (Nov 6, 2026); Federal Reserve H.15 / implementation note (Oct 28, 2026); TreasuryDirect rate announcements (Nov 1–2, 2026).</li>
+        <li><strong>Retirement limits</strong> — <a href="https://www.irs.gov/newsroom/401k-limit-increases-to-24500-for-2026-ira-limit-increases-to-7500" target="_blank" rel="noopener">IRS Notice 2025-67 / IR-2025-111 (Nov 13, 2025)</a>, corroborated by two independent secondary sources plus the IRS's own indexed release text.</li>
+        <li><strong>Morningstar pricing</strong> — <a href="https://tickernerd.com/resources/morningstar-review/" target="_blank" rel="noopener">TickerNerd review</a>, checked Sept 16, 2026 against Morningstar's own pages; segment revenue via DCF Analyst from the FY2025 Form 10-K.</li>
+        <li><strong>Dividend examples</strong> — Motley Fool high-yield list (data Nov 7, 2026); S&amp;P Dow Jones Indices Aristocrats count (Mar 2026); stock-board snapshot as of Oct 9, 2026 (StockAnalysis via Belanger Trading).</li>
+      </ul>
+    </div>
+    <div class="callout red">
+      <h3>⚠️ Open questions — not verified, do not rely on these yet</h3>
+      <ol style="margin:8px 0;padding-left:20px">
+        <li style="margin:7px 0"><strong>All live prices and yields</strong> are snapshots dated Nov 2–7, 2026 from secondary sources. Re-verify against home.treasury.gov, federalreserve.gov / FRED and TreasuryDirect on any publication day.</li>
+        <li style="margin:7px 0"><strong>Morningstar Investor 2-/3-year pricing</strong> ($448 / $499) rests on a single review. Verify on morningstar.com before quoting.</li>
+        <li style="margin:7px 0"><strong>Morningstar 2025 revenue</strong> is reported as both ~$1.7bn and ~$2.2–2.4bn. The segment figures support the higher range; check the 2025 Form 10-K directly.</li>
+        <li style="margin:7px 0"><strong>Fed Chair:</strong> November 2026 sources name Kevin Warsh. Not confirmed against federalreserve.gov — this site does not name a Chair.</li>
+        <li style="margin:7px 0"><strong>FTC affiliate-rule "revision" effective July 1, 2026</strong> (one affiliate-marketing source) was not corroborated on ftc.gov.</li>
+        <li style="margin:7px 0"><strong>FTC civil penalty per violation:</strong> $50,120 vs $51,744 vs $53,088 across 2026 sources — check the current 16 CFR 1.98 table.</li>
+        <li style="margin:7px 0"><strong>Solo 401(k) establishment after Dec 31</strong> by sole proprietors (employer-only contributions in year one) — sources differ; confirm in IRS Publication 560.</li>
+        <li style="margin:7px 0"><strong>Traditional IRA deduction phase-out, married filing jointly</strong> (covered by a workplace plan), and the SIMPLE IRA $18,100 small-employer variant — not fully captured; verify in Notice 2025-67.</li>
+        <li style="margin:7px 0"><strong>December 2026 rate-hike odds</strong> ranged ~65%–78.6% by source and date. No single figure is published on this site; CME FedWatch is the live check.</li>
+        <li style="margin:7px 0"><strong>Tax tables</strong> (2026 brackets, standard deduction) come from secondary sources — verify against IRS Rev. Proc. 2025-32 before publishing any tax table. No brokerage account-opening flow or Morningstar paywalled page was tested end-to-end in the research.</li>
+      </ol>
+    </div>
+  </div>
+  <p class="small" style="margin-top:16px">How to read the rest of the site with this page in mind: a figure with a date and a named source is a confirmed snapshot, true for that date. A figure described as "reported", "flagged" or an "open question" is a lead, not a fact. When the two conflict, this page wins — and the correction policy in Legal &amp; Disclosures (§9) applies.</p>
+</section>
+
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <a class="logo" href="#" data-goto="home" style="font-size:28px">Dividend<span class="z">Zone</span></a>
+        <p class="small">Dividend stocks &amp; government bonds, explained in plain English. Education and research tools only — not financial advice. Market figures on this concept are a dated snapshot (Nov 6, 2026), not live data.</p>
+        <p class="small">Dividend Zone is owned and operated by Sean O'Friel · New York</p>
+      </div>
+      <div>
+        <h3 style="font-size:16px;margin-bottom:10px">Explore</h3>
+        <ul>
+          <li><a href="#" data-goto="stocks">Dividend Stocks</a></li>
+          <li><a href="#" data-goto="bonds">Government Bonds</a></li>
+          <li><a href="#" data-goto="calculators">Calculators</a></li>
+          <li><a href="#" data-goto="retire">Retire on Your Own</a></li>
+          <li><a href="#" data-goto="learn">Learn</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="font-size:16px;margin-bottom:10px">Trust &amp; legal</h3>
+        <ul>
+          <li><a href="#" data-goto="legal">Disclosures &amp; Risk</a></li>
+          <li><a href="#" data-goto="legal">Privacy Policy</a></li>
+          <li><a href="#" data-goto="legal">Terms of Use</a></li>
+          <li><a href="#" data-goto="legal">About &amp; Contact</a></li>
+          <li><a href="#" data-goto="sources">Sources &amp; Open Questions</a></li>
+          <li><a href="mailto:sean.ofriel@aol.com">sean.ofriel@aol.com</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ---------- tab navigation ---------- */
+var views = ["home","stocks","bonds","calculators","retire","learn","legal","sources"];
+function gotoView(name){
+  views.forEach(function(v){
+    document.getElementById("view-"+v).classList.toggle("active", v===name);
+  });
+  document.querySelectorAll("nav.tabs button").forEach(function(b){
+    b.setAttribute("aria-selected", b.getAttribute("data-goto")===name ? "true":"false");
+  });
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+document.querySelectorAll("[data-goto]").forEach(function(el){
+  el.addEventListener("click", function(e){ e.preventDefault(); gotoView(el.getAttribute("data-goto")); });
+});
+
+/* ---------- stock board ---------- */
+var STOCKS = [
+  {name:"Verizon", tick:"VZ", sector:"Telecom", price:41.65, div:2.83, yld:6.80, payout:73.7, streak:21},
+  {name:"PepsiCo", tick:"PEP", sector:"Consumer staples", price:125.97, div:5.92, yld:4.70, payout:74.5, streak:54},
+  {name:"Chevron", tick:"CVX", sector:"Energy", price:null, div:null, yld:4.20, payout:58, streak:37},
+  {name:"Medtronic", tick:"MDT", sector:"Healthcare", price:88.48, div:2.88, yld:3.26, payout:70.9, streak:50},
+  {name:"Coca-Cola", tick:"KO", sector:"Consumer staples", price:null, div:null, yld:3.10, payout:68, streak:63},
+  {name:"Procter & Gamble", tick:"PG", sector:"Consumer staples", price:151.23, div:4.35, yld:2.88, payout:65.7, streak:70},
+  {name:"AbbVie", tick:"ABBV", sector:"Healthcare", price:276.47, div:6.92, yld:2.50, payout:195.5, streak:54},
+  {name:"Johnson & Johnson", tick:"JNJ", sector:"Healthcare", price:261.44, div:5.36, yld:2.05, payout:62.1, streak:64},
+  {name:"Lowe's", tick:"LOW", sector:"Industrials", price:null, div:null, yld:2.15, payout:32, streak:51}
+];
+function safetyScore(s){
+  var score = 5;
+  if (s.payout > 100) score -= 3; else if (s.payout > 80) score -= 2; else if (s.payout > 65) score -= 1;
+  if (s.streak >= 50) score += 0; else if (s.streak >= 25) score -= 0; else score -= 1;
+  if (s.yld > 6) score -= 1;
+  return Math.max(1, Math.min(5, score));
+}
+function scoreHTML(n){
+  var cls = n>=4 ? "" : (n===3 ? "mid" : "low");
+  var out = '<span class="score" title="Income Safety Score '+n+' of 5 (concept)">';
+  for (var i=1;i<=5;i++) out += '<i class="'+(i<=n ? "on "+cls : "")+'"></i>';
+  return out + '</span> <span class="mono" style="font-size:12.5px">'+n+'/5</span>';
+}
+var sortKey = "yld", sortDir = -1;
+function renderStocks(){
+  var q = document.getElementById("stockSearch").value.trim().toLowerCase();
+  var sec = document.getElementById("sectorFilter").value;
+  var rows = STOCKS.filter(function(s){
+    return (!q || s.name.toLowerCase().indexOf(q)>-1 || s.tick.toLowerCase().indexOf(q)>-1) && (!sec || s.sector===sec);
+  });
+  rows.sort(function(a,b){
+    var av = a[sortKey], bv = b[sortKey];
+    if (sortKey==="score"){ av = safetyScore(a); bv = safetyScore(b); }
+    if (sortKey==="name"){ return sortDir * a.name.localeCompare(b.name); }
+    av = (av===null? -1: av); bv = (bv===null? -1: bv);
+    return sortDir * (av - bv);
+  });
+  var tb = document.querySelector("#stockTable tbody");
+  tb.innerHTML = rows.map(function(s){
+    var flag = s.payout>100 ? ' <span class="pill red">Payout &gt;100% — investigate</span>' : (s.streak>=50 ? ' <span class="pill gold">Dividend King</span>' : (s.streak>=25 ? ' <span class="pill">Aristocrat</span>' : ''));
+    return "<tr><td><span class='co'>"+s.name+"</span> <span class='tick'>"+s.tick+"</span>"+flag+"<br/><span class='small'>"+s.sector+"</span></td>"+
+      "<td class='num'>"+(s.price? "$"+s.price.toFixed(2) : "—")+"</td>"+
+      "<td class='num'>"+(s.div? "$"+s.div.toFixed(2) : "—")+"</td>"+
+      "<td class='num'><strong>"+s.yld.toFixed(2)+"%</strong></td>"+
+      "<td class='num'>"+s.payout.toFixed(1)+"%</td>"+
+      "<td class='num'>"+s.streak+" yrs</td>"+
+      "<td>"+scoreHTML(safetyScore(s))+"</td></tr>";
+  }).join("");
+  document.getElementById("stockCount").textContent = rows.length + " of " + STOCKS.length + " companies";
+}
+document.getElementById("stockSearch").addEventListener("input", renderStocks);
+document.getElementById("sectorFilter").addEventListener("change", renderStocks);
+document.querySelectorAll("#stockTable thead th").forEach(function(th){
+  th.addEventListener("click", function(){
+    var k = th.getAttribute("data-sort");
+    if (sortKey===k) sortDir *= -1; else { sortKey = k; sortDir = (k==="name") ? 1 : -1; }
+    renderStocks();
+  });
+});
+renderStocks();
+
+/* ---------- yield curve chart (hand-drawn SVG from the Nov 6, 2026 par curve) ---------- */
+(function(){
+  var pts = [
+    {label:"1 Mo", months:1, y:4.02},
+    {label:"3 Mo", months:3, y:4.19},
+    {label:"2 Yr", months:24, y:4.51},
+    {label:"10 Yr", months:120, y:4.86},
+    {label:"30 Yr", months:360, y:5.26}
+  ];
+  var W=720, H=300, padL=48, padR=16, padT=18, padB=40;
+  var iw = W-padL-padR, ih = H-padT-padB;
+  var xMax = Math.log(360);
+  function X(m){ return padL + (Math.log(m)/xMax)*iw; }
+  function Y(v){ return padT + (1 - (v-3.6)/(5.6-3.6))*ih; }
+  var s = '<svg viewBox="0 0 '+W+' '+H+'" width="100%" role="img" aria-label="Treasury yield curve chart, November 6 2026">';
+  [3.6,4.0,4.4,4.8,5.2,5.6].forEach(function(g){
+    s += '<line x1="'+padL+'" y1="'+Y(g)+'" x2="'+(W-padR)+'" y2="'+Y(g)+'" stroke="var(--line)" stroke-width="1"/>';
+    s += '<text x="'+(padL-8)+'" y="'+(Y(g)+4)+'" text-anchor="end" font-size="11" fill="var(--ink2)">'+g.toFixed(1)+'%</text>';
+  });
+  var path = pts.map(function(p,i){ return (i? "L":"M")+X(p.months).toFixed(1)+","+Y(p.y).toFixed(1); }).join(" ");
+  s += '<path d="'+path+'" fill="none" stroke="var(--green)" stroke-width="2.5"/>';
+  pts.forEach(function(p){
+    s += '<circle cx="'+X(p.months)+'" cy="'+Y(p.y)+'" r="5" fill="var(--surface)" stroke="var(--green)" stroke-width="2.5"/>';
+    s += '<text x="'+X(p.months)+'" y="'+(Y(p.y)-12)+'" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--ink)">'+p.y.toFixed(2)+'%</text>';
+    s += '<text x="'+X(p.months)+'" y="'+(H-14)+'" text-anchor="middle" font-size="11.5" fill="var(--ink2)">'+p.label+'</text>';
+  });
+  s += '</svg>';
+  document.getElementById("yieldChart").innerHTML = s;
+})();
+
+/* ---------- income calculator ---------- */
+var money = function(n){ return "$" + Math.round(n).toLocaleString("en-US"); };
+function calcIncome(){
+  var amt = parseFloat(document.getElementById("incAmount").value) || 0;
+  var y = parseFloat(document.getElementById("incYield").value) || 0;
+  var yrs = parseInt(document.getElementById("incYears").value, 10) || 1;
+  document.getElementById("incYieldLabel").textContent = y.toFixed(2) + "%";
+  document.getElementById("incYearsLabel").textContent = yrs;
+  document.getElementById("incYearsEcho").textContent = yrs;
+  var perYear = amt * y/100;
+  document.getElementById("incPerYear").textContent = money(perYear);
+  document.getElementById("incPerMonth").textContent = money(perYear/12);
+  document.getElementById("incGrown").textContent = money(amt * Math.pow(1 + y/100, yrs));
+}
+document.getElementById("incAsset").addEventListener("change", function(){
+  if (this.value !== "custom"){
+    document.getElementById("incYield").value = this.value;
+  }
+  calcIncome();
+});
+["incAmount","incYield","incYears"].forEach(function(id){
+  document.getElementById(id).addEventListener("input", calcIncome);
+});
+calcIncome();
+
+/* ---------- bond ladder ---------- */
+var CURVE = [ {m:1, y:4.02}, {m:3, y:4.19}, {m:24, y:4.51}, {m:120, y:4.86}, {m:360, y:5.26} ];
+function yieldAt(months){
+  if (months <= CURVE[0].m) return CURVE[0].y;
+  for (var i=1;i<CURVE.length;i++){
+    if (months <= CURVE[i].m){
+      var a = CURVE[i-1], b = CURVE[i];
+      var t = (Math.log(months)-Math.log(a.m)) / (Math.log(b.m)-Math.log(a.m));
+      return a.y + t*(b.y-a.y);
+    }
+  }
+  return CURVE[CURVE.length-1].y;
+}
+function calcLadder(){
+  var amt = parseFloat(document.getElementById("ladAmount").value) || 0;
+  var yrs = parseInt(document.getElementById("ladYears").value, 10) || 5;
+  document.getElementById("ladYearsLabel").textContent = yrs + " years";
+  document.getElementById("ladYearsEcho").textContent = yrs;
+  var per = amt / yrs, total = 0, html = "";
+  for (var yr=1; yr<=yrs; yr++){
+    var y = yieldAt(yr*12);
+    var inc = per * y/100;
+    total += inc;
+    html += '<div class="rung"><span><strong>Year '+yr+'</strong> rung · matures in '+yr+' yr'+(yr>1?"s":"")+'</span><span class="mono">'+money(per)+' @ '+y.toFixed(2)+'% → '+money(inc)+'/yr</span></div>';
+  }
+  document.getElementById("ladderOut").innerHTML = html;
+  document.getElementById("ladIncome").textContent = money(total);
+  document.getElementById("ladBlend").textContent = amt>0 ? (total/amt*100).toFixed(2)+"%" : "—";
+}
+["ladAmount","ladYears"].forEach(function(id){
+  document.getElementById(id).addEventListener("input", calcLadder);
+});
+calcLadder();
+
+/* ---------- tax-equivalent yield ---------- */
+function calcTEY(){
+  var y = parseFloat(document.getElementById("teyYield").value) || 0;
+  var b = parseFloat(document.getElementById("teyBracket").value) || 0;
+  document.getElementById("teyYieldLabel").textContent = y.toFixed(2) + "%";
+  var tey = y / (1 - b/100);
+  document.getElementById("teyOut").textContent = tey.toFixed(2) + "%";
+  document.getElementById("teyVerdict").textContent = tey > 4.86
+    ? "At this bracket the muni's after-tax yield beats the 10-year Treasury's 4.86% headline — before weighing the muni's credit risk and the Treasury's state-tax exemption."
+    : "At this bracket the 10-year Treasury's 4.86% still pays more after federal tax — and its interest also skips state and local tax.";
+}
+["teyYield","teyBracket"].forEach(function(id){
+  document.getElementById(id).addEventListener("input", calcTEY);
+  document.getElementById(id).addEventListener("change", calcTEY);
+});
+calcTEY();
+</script>
+</body>
+</html>
